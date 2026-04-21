@@ -1,62 +1,43 @@
 # LAIR – Logistics Adaptive Intelligent Routing
 
+## Problem Statement
+
+In logistics networks, a delay at a single hub can propagate through connected routes and disrupt multiple shipments. Traditional routing approaches do not adapt effectively once such disruptions occur, leading to inefficiencies and delivery failures.
+
+---
+
 ## Overview
 
-LAIR is a logistics network simulation system that models how deliveries move through a multi-stage supply chain and how disruptions affect them. The system detects critical bottlenecks, isolates them, and reroutes shipments using load-aware pathfinding.
+LAIR is a logistics network simulation system that models delivery movement across a multi-stage supply chain. It detects critical bottlenecks, isolates them, and reroutes shipments dynamically using load-aware pathfinding.
 
-The goal is not to remove delays, but to minimize their impact by adapting routes dynamically.
-
----
-
-## Problem
-
-In real-world logistics systems, a delay at a single hub can propagate across the network and affect multiple shipments. Traditional routing approaches do not adapt efficiently under such disruptions.
+The system does not eliminate delays; it minimizes their impact by adapting routing decisions under disrupted conditions.
 
 ---
 
-## Solution
+## Data Structures and Algorithms Used
 
-LAIR models the logistics network as a graph and processes disruptions in three phases:
+* **Graph (Adjacency List)**
+  Represents the logistics network where hubs are nodes and routes are directed edges.
 
-1. **Delay propagation** – simulates how delay spreads through connected hubs
-2. **Bottleneck detection** – identifies the most critical hub based on impact
-3. **Adaptive rerouting** – computes new paths while avoiding the bottleneck
+* **Breadth-First Search (BFS)**
+  Used to propagate delay across the network based on connectivity and travel time.
 
-The system ensures:
-
-* shipments avoid failed hubs
-* routing remains feasible
-* load is distributed across the network
-
----
-
-## Core Concepts
-
-* **Graph Representation**
-  Hubs are nodes and routes are directed edges.
-
-* **Delay Propagation (BFS)**
-  Delay spreads forward through the network based on travel time.
-
-* **Bottleneck Scoring**
-  Each hub is scored using:
-
-  ```
-  score = downstream impact × number of dependent shipments
-  ```
-
-* **Load-Aware Routing (Modified Dijkstra)**
-  Routing cost considers both travel time and congestion:
+* **Priority Queue + Dijkstra’s Algorithm**
+  Used for computing optimized routes with a load-aware cost function:
 
   ```
   cost = α × travel time + β × hub load
   ```
 
-* **Connectivity Check (Union-Find)**
-  Ensures a shipment can still reach its destination before rerouting.
+* **Union-Find (Disjoint Set)**
+  Used to verify connectivity between hubs before attempting rerouting.
 
-* **Position-Aware Rerouting**
-  Shipments reroute based on their current location, not from origin.
+* **Custom Bottleneck Scoring**
+  Each hub is evaluated using:
+
+  ```
+  score = downstream impact × number of dependent shipments
+  ```
 
 ---
 
@@ -71,7 +52,7 @@ Input → Graph Build → Delay Propagation → Bottleneck Detection
 
 ## Features
 
-* Detects and isolates critical hubs
+* Detects and isolates critical bottlenecks
 * Dynamically reroutes affected shipments
 * Handles invalid inputs and unreachable paths
 * Tracks shipment status: ACTIVE / DELIVERED / FAILED
@@ -82,7 +63,7 @@ Input → Graph Build → Delay Propagation → Bottleneck Detection
 
 ## Input Format
 
-The system reads from a text file with four sections:
+The system reads from a structured text file:
 
 ```
 HUB <id> <type>
@@ -91,7 +72,7 @@ SHIPMENT <id> <path...> | CURRENT <hub>
 DELAY <hub> <value>
 ```
 
-Example:
+### Example
 
 ```
 HUB W1 WAREHOUSE
@@ -118,14 +99,13 @@ DELAY R2 15
 1. Place `sample_network.txt` in the project root
 2. Run:
 
-```
-com.logistics.Main
-```
-
+   ```
+   com.logistics.Main
+   ```
 3. Use the UI “NEXT” button to step through:
 
    * Phase 1: Initial state
-   * Phase 2: Delay + bottleneck
+   * Phase 2: Delay and bottleneck detection
    * Phase 3: Rerouting
 
 ---
@@ -133,14 +113,20 @@ com.logistics.Main
 ## Technologies Used
 
 * Java
-* JavaFX (UI)
-* Graph algorithms (BFS, Dijkstra)
-* Union-Find (Disjoint Set)
+* JavaFX
+* Graph Algorithms (BFS, Dijkstra)
+* Union-Find
+
+---
+
+## Project Demo Video
+
+```
+[Insert your video link here]
+```
 
 ---
 
 ## Key Takeaway
 
-LAIR demonstrates how a logistics system can remain operational under disruption by adapting routes intelligently instead of failing completely.
-
-It focuses on **resilience, not elimination of delay**.
+LAIR demonstrates how a logistics system can remain operational under disruption by adapting routes intelligently. It focuses on resilience and optimization rather than eliminating delays.
