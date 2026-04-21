@@ -122,7 +122,7 @@ DELAY R2 15
 ## Project Demo Video
 
 ```
-[Insert your video link here]
+https://drive.google.com/file/d/1SSAlpuxXQEnAy3Da4dsF0aTm2E07ARRM/view?usp=sharing
 ```
 
 ---
